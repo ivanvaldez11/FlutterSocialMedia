@@ -26,18 +26,29 @@ class _LandingState extends State<Landing> {
                 children: [
                   Align(
                     alignment: Alignment.centerLeft,
-                    child: Text(
-                      'MyMedia',
-                      style: GoogleFonts.ubuntu(
-                          color: Colors.blueAccent,
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'MyMedia',
+                          style: GoogleFonts.ubuntu(
+                              color: Colors.blueAccent,
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        IconButton(
+                            onPressed: () {},
+                            icon: Icon(
+                              Icons.person,
+                              color: Colors.blueAccent,
+                            ))
+                      ],
                     ),
                   ),
                   const Divider(
                     color: Colors.grey,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Container(
@@ -61,9 +72,12 @@ class _LandingState extends State<Landing> {
                             width: 125,
                             color: Colors.grey,
                             child: Center(
-                                child: CircleAvatar(
-                              child: Icon(Icons.add),
-                              backgroundColor: Colors.white,
+                                child: InkWell(
+                              onTap: () {},
+                              child: CircleAvatar(
+                                child: Icon(Icons.add),
+                                backgroundColor: Colors.white,
+                              ),
                             )),
                           ),
                         ),
@@ -87,7 +101,7 @@ class _LandingState extends State<Landing> {
                   SizedBox(
                     height: 10,
                   ),
-                  Column(children: [
+                  Column(children: const [
                     PostsCard(),
                     PostsCard(),
                   ])
@@ -105,14 +119,26 @@ class StoryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: Container(height: 175, width: 125, color: Colors.grey),
+      child: Container(
+        height: 175,
+        width: 125,
+        color: Colors.grey,
+      ),
     );
   }
 }
 
-class PostsCard extends StatelessWidget {
-  const PostsCard({Key? key}) : super(key: key);
+class PostsCard extends StatefulWidget {
+  final onLike;
+  final postId;
+  const PostsCard({Key? key, this.onLike, this.postId}) : super(key: key);
 
+  @override
+  State<PostsCard> createState() => _PostsCardState();
+}
+
+class _PostsCardState extends State<PostsCard> {
+  bool like = false;
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -134,7 +160,10 @@ class PostsCard extends StatelessWidget {
                     style: GoogleFonts.alice(color: Colors.grey))
               ],
             ),
-            Divider(),
+            const Divider(),
+            const SizedBox(
+              height: 2,
+            ),
             Text(
               'Walking the Dog',
               style: GoogleFonts.alice(),
@@ -142,12 +171,20 @@ class PostsCard extends StatelessWidget {
             ),
             Image.network(
                 'https://images.pexels.com/photos/2899097/pexels-photo-2899097.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'),
+            const Divider(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 MaterialButton(
-                  child: Icon(Icons.favorite),
-                  onPressed: () {},
+                  child: like == false
+                      ? Icon(Icons.favorite_border_outlined)
+                      : Icon(Icons.favorite),
+                  onPressed: () {
+                    setState(() {
+                      like = like == false ? true : false;
+                    });
+                    widget.onLike;
+                  },
                 ),
                 MaterialButton(
                   child: Icon(Icons.comment),

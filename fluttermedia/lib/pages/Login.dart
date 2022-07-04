@@ -67,8 +67,8 @@ class Login extends StatelessWidget {
                     child: MaterialButton(
                       minWidth: double.infinity,
                       onPressed: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => Landing()));
+                        Login.login(emailController.text.trim(),
+                            passwordController.text.trim(), context);
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(15.0),
