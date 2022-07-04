@@ -9,7 +9,7 @@ class PostService {
   createPost(title, url) async {
     var name = _auth.currentUser!.displayName;
     var image = _auth.currentUser!.photoURL;
-    var id = DataTime.now();
+    var id = DateTime.now();
 
     try {
       await _firestore.collection('Posts').doc(id.toString()).set({
@@ -29,7 +29,6 @@ class Post {
   final uploader;
   final uploaderImage;
   final title;
-  final photo;
   final photo;
   Post(this.uploader, this.uploaderImage, this.title, this.photo);
 }

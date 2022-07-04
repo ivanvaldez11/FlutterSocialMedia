@@ -1,4 +1,4 @@
-import 'dart.io';
+import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -11,10 +11,10 @@ import 'package:fluttermedia/pages/updateProfile.dart';
 
 class Auth {
   static Future login(email, password, BuildContext context) async {
-    final _auth = FireBaseAuth.instance;
+    final _auth = FirebaseAuth.instance;
     try {
       await _auth
-          .signInWithEmailandPassword(email: email, password: password)
+          .signInWithEmailAndPassword(email: email, password: password)
           .then((value) {
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => LandingPAge()));
@@ -25,10 +25,10 @@ class Auth {
   }
 
   static Future signup(email, password, BuildContext context) async {
-    final _auth = FireBaseAuth.instance;
+    final _auth = FirebaseAuth.instance;
     try {
       await _auth
-          .signInWithEmailandPassword(email: email, password: password)
+          .createUserWithEmailAndPassword(email: email, password: password)
           .then((value) {
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => UpdateProfile()));
@@ -40,7 +40,7 @@ class Auth {
   }
 
   static Future updateProfile({name, context, image}) async {
-    final _auth = FireBaseAuth.instance;
+    final _auth = FirebaseAuth.instance;
 
     try {
       await _auth.currentUser!.updateDisplayName(name);
@@ -58,7 +58,9 @@ class Auth {
     var url;
     try {
       var image = await ImagePicker().pickImage(source: ImageSource.gallery);
-      await _storage.ref(image!.name).putFile(File(image.path)).then((p0) {});
+      await _storage.ref(image!.name).putFile(File(image.path)).then((p0) {
+        url = p0.ref.getDownloadURL();
+      });
     } catch (e) {
       Fluttertoast.showToast(msg: e.toString());
       print(e);
